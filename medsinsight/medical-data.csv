@@ -1,0 +1,49 @@
+age,gender,symptoms,disease
+25,Male,fever cough cold,Flu
+34,Female,headache nausea,Migraine
+45,Male,chest pain shortness of breath,Heart Disease
+19,Female,sore throat fever,Throat Infection
+60,Male,joint pain stiffness,Arthritis
+28,Female,abdominal pain bloating,Gastritis
+50,Male,high blood sugar frequent urination,Diabetes
+33,Female,weight gain fatigue,Thyroid
+41,Male,back pain numbness,Sciatica
+22,Female,runny nose sneezing,Common Cold
+55,Male,blurred vision headache,Hypertension
+37,Female,irregular periods cramps,PCOS
+48,Male,shortness of breath wheezing,Asthma
+30,Female,itchy skin rashes,Allergy
+65,Male,frequent urination weak flow,Prostate Enlargement
+26,Female,fever body ache,Dengue
+39,Male,acid reflux chest burning,GERD
+18,Female,dizziness low energy,Anemia
+52,Male,tremors slow movement,Parkinsons
+44,Female,breast pain lump,Breast Infection
+29,Male,eye strain headache,Eye Fatigue
+61,Female,memory loss confusion,Alzheimers
+35,Male,fever night sweats,Tuberculosis
+23,Female,vomiting diarrhea,Food Poisoning
+47,Male,leg swelling fatigue,Kidney Disease
+31,Female,panic anxiety sweating,Anxiety Disorder
+58,Male,chronic cough weight loss,Lung Disease
+27,Female,pelvic pain discharge,UTI
+49,Male,irregular heartbeat dizziness,Arrhythmia
+21,Female,acne oily skin,Acne Vulgaris
+63,Male,vision loss eye pain,Glaucoma
+36,Female,fever joint pain,Chikungunya
+42,Male,stomach pain blood in stool,Ulcer
+24,Female,sleep issues irritability,Insomnia
+54,Male,weakness pale skin,Anemia
+38,Female,neck pain stiffness,Cervical Spondylosis
+46,Male,frequent headaches nausea,Migraine
+20,Female,fever rash,Measles
+59,Male,swollen ankles breathlessness,Heart Failure
+32,Female,weight loss thirst,Diabetes
+67,Male,hearing loss ear pain,Otitis Media
+28,Female,lower back pain,Muscle Strain
+40,Male,nasal congestion facial pain,Sinusitis
+53,Female,joint swelling redness,Rheumatoid Arthritis
+34,Male,fever chills sweating,Malaria
+62,Female,bone pain fractures,Osteoporosis
+26,Male,stress insomnia fatigue,Depression
+45,Female,shortness of breath chest tightness,Asthma

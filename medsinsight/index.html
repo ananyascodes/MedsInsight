@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="shortcut icon" href="logo.jpeg" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MedInsight – AI Health Risk Screening</title>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  </head>
+  <body>
+    <!-- Navigation Bar -->
+    <nav class="main-nav">
+      <div class="nav-logo">
+        <img src="logo.jpeg" alt="MedInsight logo" />
+        <span>MedInsight</span>
+      </div>
+      <ul class="nav-links">
+        <li class="nav-link active" id="nav-home" onclick="showOnlyMode();setActiveNav('nav-home')">Home</li>
+        <li class="nav-link" id="nav-patient" onclick="openPatientMode();setActiveNav('nav-patient')">Patient Analysis</li>
+        <li class="nav-link" id="nav-dataset" onclick="openDatasetMode();setActiveNav('nav-dataset')">Dataset Analysis</li>
+        <li class="nav-link" id="nav-map" onclick="scrollToMap();setActiveNav('nav-map')">Map</li>
+      </ul>
+    </nav>
+
+    <div id="chatbot-button">4ac</div>
+    <div id="chatbot-window">
+      <div id="chatbot-header">
+        <span>AI Assistant</span>
+        <button id="chatbot-close">&times;</button>
+      </div>
+      <div id="chatbot-messages"></div>
+      <input id="chatbot-input" type="text" placeholder="Type your question here..." />
+      <div id="chatbot-input-area">
+        <br />
+        <button id="chatbot-send">Send</button>
+      </div>
+    </div>
+
+    <main class="hero">
+      <section class="hero-left">
+        <div class="hero-badge-row">
+          <div class="hero-logo-pill">
+            <img src="logo.jpeg" alt="MedInsight logo" />
+            <span>MedInsight</span>
+          </div>
+          <div class="hero-small-pill">
+            <i class="fas fa-compass"></i>
+            Guided preventive AI
+          </div>
+        </div>
+
+        <h1 class="hero-title" style="width: 100%;">
+          <button class="btn-primary" onclick="openPatientMode()"
+          style="background-color: #f5f7fb;color: black; margin-top: 15px;font-size: 32px;font-weight: bolder;
+          font-family: 'Poppins', sans-serif;">
+          AI-assisted health risk<br />
+          screening
+          </button>
+        </h1>
+
+        <p class="hero-title" style="width: 100%;">
+          <button class="btn-primary" onclick="openPatientMode()"
+          style="background-color: #f5f7fb;color: black; margin-top: 15px;font-size: 18px;">
+          Understand health risk patterns through data – not diagnosis.
+          </button>
+        </p>
+
+        <div class="hero-actions">
+          <button class="btn-primary" onclick="openPatientMode()"
+          style="background-color: #D6F5D8;color: #2EAD4F;">
+            We help you to stay healthy
+          </button>
+          <button class="btn-secondary" onclick="openDatasetMode()"
+          style="background-color: #D6F5D8;color: #2EAD4F;">
+            Part of healthcare research community
+          </button>
+        </div>
+
+        <p class="hero-footnote" style="font-size: 13px;">
+          Based on public health datasets · No diagnosis · Secure access
+        </p>
+      </section>
+
+      <div class="container" id="authBox">
+        <div class="card">
+          <h2><i class="fas fa-user-shield"></i> Welcome</h2>
+          <div class="form-group">
+            <input type="email" id="email" placeholder="Email address" />
+          </div>
+          <div class="form-group">
+            <input type="password" id="password" placeholder="Password" />
+          </div>
+          <button class="primary" onclick="login()">
+            <i class="fas fa-sign-in-alt"></i> Login
+          </button>
+          <button class="primary" onclick="signup()">
+            <i class="fas fa-user-plus"></i> Sign Up
+          </button>
+          <button class="google" onclick="googleLogin()">
+            <i class="fab fa-google"></i> Continue with Google
+          </button>
+          <div class="msg" id="msg"></div>
+        </div>
+      </div>
+      <div class="container hidden" id="modeBox">
+        <div class="card">
+          <h2><i class="fas fa-layer-group"></i> Choose Analysis Mode</h2>
+          <button class="primary" onclick="openPatientMode()"
+          >
+            <i class="fas fa-user-md"></i> Analyze Single Patient
+          </button>
+          <button class="primary" onclick="openDatasetMode()">
+            <i class="fas fa-table"></i> Analyze Dataset (CSV)
+          </button>
+        </div>
+      </div>
+
+      
+    </main>
+    
+    <div class="container hidden" id="patientBox">
+      <div class="card">
+        <h2><i class="fas fa-user-md"></i> Patient Details</h2>
+        <div class="form-group">
+          <input id="pname" placeholder="Patient Name *" />
+        </div>
+        <div class="form-group">
+          <input type="number" id="age" placeholder="Age *" min="0" max="120" />
+        </div>
+        <div class="form-group">
+          <select id="gender">
+            <option value="">Select Gender *</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <textarea
+            id="symptoms"
+            placeholder="Describe symptoms in detail (e.g., fever for 3 days, cough, fatigue...) *"
+          ></textarea>
+        </div>
+        <div class="form-group">
+          <textarea
+            id="disease"
+            placeholder="Existing medical conditions (optional)"
+          ></textarea>
+        </div>
+        <button class="primary" onclick="submitPatient()">
+          <i class="fas fa-brain"></i> Analyze with AI
+        </button>
+        <div class="msg" id="result"></div>
+      </div>
+    </div>
+
+    <div class="container hidden" id="csvBox">
+      <div class="card">
+        <h2><i class="fas fa-table"></i> Dataset Analysis</h2>
+        <div class="form-group">
+          <input type="file" id="csvFile" accept=".csv" />
+        </div>
+        <p
+          style="
+            text-align: center;
+            color: #64748b;
+            font-size: 14px;
+            margin: 10px 0;
+          "
+        >
+          Upload CSV with columns like: age, gender, symptoms, disease
+        </p>
+        <button class="primary" onclick="uploadCSV()">
+          <i class="fas fa-upload"></i> Analyze Dataset
+        </button>
+        <div class="msg" id="csvMsg"></div>
+        <button
+          class="back-btn"
+          onclick="goBackToMode()"
+          style="margin-top: 15px"
+        >
+          <i class="fas fa-arrow-left"></i> Back to Modes
+        </button>
+      </div>
+    </div>
+    
+
+    
+    <!-- result of ai prediction -->
+    <div class="container hidden" id="resultBox">
+      <div class="card">
+        <h2><i class="fas fa-chart-line"></i> AI Health Insights</h2>
+        <div class="result-section">
+          <div class="result-card condition" id="cond">
+            <div class="result-header">
+              <div class="result-icon">
+                <i class="fas fa-stethoscope"></i>
+              </div>
+              <div class="result-title">Possible Condition</div>
+            </div>
+            <div class="result-content">Loading...</div>
+          </div>
+        </div>
+        <div class="result-section">
+          <div class="result-card diet" id="diet">
+            <div class="result-header">
+              <div class="result-icon">
+                <i class="fas fa-utensils"></i>
+              </div>
+              <div class="result-title">Diet Recommendations</div>
+            </div>
+            <div class="result-content">Loading...</div>
+          </div>
+        </div>
+        <div class="result-section">
+          <div class="result-card medication" id="med">
+            <div class="result-header">
+              <div class="result-icon">
+                <i class="fas fa-pills"></i>
+              </div>
+              <div class="result-title">Medication Guidance</div>
+            </div>
+            <div class="result-content">Loading...</div>
+          </div>
+        </div>
+        <div class="result-section">
+          <div class="result-card precautions" id="prec">
+            <div class="result-header">
+              <div class="result-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+              </div>
+              <div class="result-title">Precautions</div>
+            </div>
+            <div class="result-content">Loading...</div>
+          </div>
+        </div>
+        <div class="result-section">
+          <div class="result-card hospital" id="hosp">
+            <div class="result-header">
+              <div class="result-icon">
+                <i class="fas fa-hospital"></i>
+              </div>
+              <div class="result-title">Hospital Advice</div>
+            </div>
+            <div class="result-content">Loading...</div>
+          </div>
+        </div>
+        <button class="back-btn" onclick="goBackToMode()">
+          <i class="fas fa-arrow-left"></i> Back to Modes
+        </button>
+      </div>
+    </div>
+
+    <!-- result of  data anylasis-->
+    <div class="wide-container container hidden" id="csvResult">
+      <div class="card wide-card">
+        <h2><i class="fas fa-chart-bar"></i> AI Dataset Insights</h2>
+
+        <div class="ai-card">
+          <h3><i class="fas fa-robot"></i> AI Prediction Summary</h3>
+          <p
+            id="csvPrediction"
+            style="font-size: 16px; color: #1e293b; line-height: 1.6"
+          >
+            Loading...
+          </p>
+        </div>
+
+        <div class="ai-card">
+          <h3><i class="fas fa-database"></i> Dataset Overview</h3>
+          <p
+            id="csvMeta"
+            style="font-size: 14px; color: #475569; line-height: 1.6"
+          ></p>
+          <ul
+            id="csvHighlights"
+            style="
+              font-size: 14px;
+              color: #475569;
+              padding-left: 18px;
+              margin-top: 8px;
+            "
+          ></ul>
+        </div>
+
+        <canvas id="chart"></canvas>
+
+        <div style="display: flex; gap: 15px; margin-top: 20px">
+          <button class="back-btn" onclick="goBackToMode()" style="flex: 1">
+            <i class="fas fa-arrow-left"></i> New Analysis
+          </button>
+          <button class="primary" onclick="downloadReport()" style="flex: 1">
+            <i class="fas fa-download"></i> Download Report
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAP SECTION -->
+    <div class="map-section">
+      <div class="map-header">
+        <div>
+          <h3>Nearby Hospitals & Clinics</h3>
+          <p>Search hospitals by city or area. Powered by OpenStreetMap.</p>
+        </div>
+      </div>
+      <input
+        id="map-query"
+        type="text"
+        placeholder="Example: Jaipur hospitals, Malviya Nagar clinic"
+      />
+      <div class="map-search-row">
+        <button id="map-search-btn"
+        style="background-color: #D6F5D8;color: #2EAD4F;">Search</button>
+      </div>
+
+      <div id="osm-map"></div>
+
+      <p class="map-note">
+        Results may not be 100% complete. For emergencies, call your local
+        emergency number immediately.
+      </p>
+    </div>
+
+    <footer class="main-footer">
+      <div class="footer-content">
+        <span>&copy; 2025 MedInsight. All rights reserved.</span>
+        <span>Made with <span style="color:#43e97b;">&#10084;</span> for better health.</span>
+        <a href="#" style="color:#38f9d7;">Privacy Policy</a>
+      </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="module" src="script.js"></script>
+    <script>
+      function setActiveNav(id) {
+        document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+      }
+      function scrollToMap() {
+        const mapSection = document.querySelector('.map-section');
+        if(mapSection) mapSection.scrollIntoView({behavior:'smooth'});
+      }
+    </script>
+  </body>
+</html>
